@@ -12,9 +12,17 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->to('/home');
 });
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
+
+//surat Keluar
+Route::get('/suratkeluar', 'SuratKeluarController@index');
+Route::get('/suratkeluar/hapus/{id}', 'SuratKeluarController@destroy');
+Route::get('/suratkeluar/tambah', 'SuratKeluarController@create');
+Route::post('/suratkeluar/simpan', 'SuratKeluarController@store');
+Route::get('/suratkeluar/edit/{id}', 'SuratKeluarController@edit');
+Route::get('/suratkeluar/cari', 'SuratKeluarController@show');

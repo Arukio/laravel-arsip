@@ -43,15 +43,22 @@
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        &nbsp;
+                        @if(Auth::check())
+                            <li class="drowdown">
+                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                   Data Surat <span class="caret"></span>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="{{url('/suratkeluar')}}">Surat Keluar</a></li>
+                                        </ul>
+                                </a>
+                            </li>
+                        @endif
                     </ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
                         @if (Auth::guest())
-                            <li><a href="{{ route('login') }}">Login</a></li>
-                            <li><a href="{{ route('register') }}">Register</a></li>
                         @else
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -77,10 +84,22 @@
                 </div>
             </div>
         </nav>
-
+        <div class="container">
+        @if(Auth::check())
+        <div class="page-header" id="banner">
+        <div class="row">
+          <div class="" style="padding: 0px 0 0 15px;">
+            <div class="well well-sm">
+                <img src="" class="thumbnail span3" style="display: inline; float: left; margin-right: 20px; width: 100px; height: 100px">
+                <h1 style="margin: 15px 0 10px 0; color: #000;"><b>SMKN 11 Bandung</b></h1>
+                <div style="color: #000; font-size: 16px; font-family: Tahoma" class="clearfix"><b></b></div>
+                </div>
+          </div>
+        </div>
+        @endif
         @yield('content')
     </div>
-
+    </div>
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
 </body>

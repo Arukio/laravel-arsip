@@ -3,9 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
-class SuratController extends Controller
+use App\SuratKeluar;
+class SuratKeluarController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +23,8 @@ class SuratController extends Controller
      */
     public function index()
     {
-        //
+        $surats = SuratKeluar::paginate(15);
+        return view('surat.index', compact('surats'));
     }
 
     /**
@@ -23,7 +34,7 @@ class SuratController extends Controller
      */
     public function create()
     {
-        //
+        return view('surat.tambah');
     }
 
     /**
@@ -34,7 +45,16 @@ class SuratController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $surats = new SuratKeluar();
+        $surats->no_agenda = $request->no_agenda; 
+        $surats->kode = $request->kode;
+        $surats->tujuan = $request->tujuan;
+        $surats->no_surat = $request->no_surat;
+        $surats->tgl_surat = $request->tgl_surat;
+        $surats->isi_ringkas = $request->isi_ringkas;
+        $surats->keterangan = $request->keterangan;
+        $surats->save();
+        return redirect()->to('/suratkeluar')->with('alert-success', 'Data berhasil di input');
     }
 
     /**
@@ -43,9 +63,11 @@ class SuratController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        //
+        $cari = $request->get('cari');
+        $surats = SuratKeluar::where('kode', 'LIKE', '%' . $cari . '%');
+        return view('juki', compact('surats'));
     }
 
     /**
@@ -56,7 +78,8 @@ class SuratController extends Controller
      */
     public function edit($id)
     {
-        //
+        $surats = SuratKeluar::findOrFail($id)->first();
+        return view('surat.edit', compact('surats'));
     }
 
     /**
@@ -79,6 +102,8 @@ class SuratController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $surats = SuratKeluar::findOrFail($id);
+        $surats->delete();
+        return redirect()->to('/surat')->with('alert-success', 'Data berhasil di Hapus');
     }
 }
